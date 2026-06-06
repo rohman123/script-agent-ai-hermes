@@ -1,0 +1,16 @@
+# WhatsApp Session and Credentials
+whatsapp_session/
+*.json
+!README.md
+!bridge.js
+!setup.sh
+!whatsapp_adapter.py
+!telegram_controller.py
+
+# Environment variables / Secrets
+.env
+*.env
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,89 +1,95 @@
-# Script Agent AI Hermes: WhatsApp Integration Components
+# Script Agent AI Hermes 🤖🚀
 
-This repository contains the core technical components required to deploy a professional, AI-powered WhatsApp Agent using the Hermes Agent architecture.
+A professional, all-in-one repository for deploying an AI-powered WhatsApp and Telegram Agent using the Hermes Agent architecture.
 
-## 🤖 Overview
+## 🌟 Overview
 
-This integration transforms WhatsApp from a simple "Remote Terminal" into a highly intelligent AI Agent. By using the **Bridge-Adapter-Gateway** pattern, the agent can understand natural language and execute complex tasks (like GitHub operations) directly from a chat interface.
+This repository integrates **WhatsApp** and **Telegram** into the **Hermes Agent AI Core**, transforming simple command-line bridges into highly intelligent, natural-language-capable AI assistants.
 
----
-
-## 🛠️ Architecture & Components
-
-The integration consists of three key parts:
-
-| Component | File | Role |
-| :--- | :--- | :--- |
-| **WhatsApp Bridge** | `bridge.js` | **The Hands:** A Node.js process (using Baileys) that maintains the WhatsApp connection and exposes an HTTP API. |
-| **WhatsApp Adapter** | `whatsapp_adapter.py` | **The Translator:** A Python adapter that polls the bridge and converts WhatsApp events into Hermes-compatible messages. |
-| **Hermes Gateway** | (Core Process) | **The Brain:** The main Hermes Agent engine that performs reasoning, tool use, and decision-making. |
+**⚠️ SECURITY NOTE:** This repository is designed to be secure. It uses environment variables for secrets and is configured to prevent session data from being uploaded. **Never share your .env file or session folders.**
 
 ---
 
-## 🚀 Step-by-Step Transformation Guide
+## 🏗️ Architecture (WhatsApp Integration)
 
-If you are upgrading a standard shell-bridge bot to this AI-powered version, follow this evolution:
+The WhatsApp integration uses a **Bridge-Adapter-Gateway** pattern:
 
-### Step 1: The Baseline (Traditional Bot)
-A standard bot typically uses a simple Python script with `subprocess.run()` to execute raw Linux commands. 
-*   **Limitation:** It cannot understand natural language and lacks access to the AI's toolset or environment.
-
-### Step 2: Preparing the Environment
-To make the bot "intelligent," we must ensure the Gateway can communicate with the WhatsApp Bridge. You need to set the following environment variables for the **Hermes Gateway**:
-
-```bash
-export WHATSAPP_BRIDGE_PORT=3000
-export WHATSAPP_BRIDGE_SCRIPT=/path/to/your/bridge.js
-export WHATSAPP_SESSION_PATH=/path/to/your/whatsapp/session
-export WHATSAPP_DM_POLICY=open
-export WHATSAPP_GROUP_POLICY=open
-```
-
-### Step 3: Launching the Gateway
-Instead of running a standalone script, you launch the **Hermes Gateway**. This process automatically loads the `whatsapp.py` adapter and begins polling the bridge.
-
-**Execution Command:**
-```bash
-cd /path/to/hermes-agent
-PYTHONPATH=. python3 -m gateway.run
-```
-
-### Step 4: Result (AI Agent)
-The transformation is complete. The user can now send natural language messages:
-*   **User:** *"Show me my GitHub repos"*
-*   **Agent:** *[Performs gh repo list via tool and responds conversationally]*
+| Component | File | Role | Technology |
+| :--- | :--- | :--- | :--- |
+| **WhatsApp Bridge** | `bridge.js` | **The Hands:** Maintains the connection. | Node.js + Baileys |
+| **WhatsApp Adapter** | `whatsapp_adapter.py` | **The Translator:** Converts events for Hermes. | Python |
+| **Hermes Gateway** | (Core Process) | **The Brain:** Performs reasoning and tool use. | Hermes Agent Core (LLM) |
+| **Telegram Controller**| `telegram_controller.py`| **Remote Terminal:** Direct shell command bridge. | Python |
 
 ---
 
-## 📦 Installation & Quick Start
+## 🚀 Quick Start Guide
 
 ### 1. Prerequisites
-- **Node.js** (for the Bridge)
-- **Python 3.x** (for the Gateway & Adapter)
+- **Node.js** (for the WhatsApp Bridge)
+- **Python 3.x** (for the Gateway & Adapters)
+- **GitHub CLI (`gh`)** (for AI tool access)
 
-### 2. Setup
-Clone this repository and run the automated setup script:
+### 2. Installation & Setup
+
+First, clone the repository:
 ```bash
-# Clone the repo
 git clone https://github.com/rohman123/script-agent-ai-hermes.git
 cd script-agent-ai-hermes
+```
 
-# Run automatic setup
+Run the automated setup script:
+```bash
 chmod +x setup.sh
 ./setup.sh
 ```
 
 ### 3. Running the System
-**A. Start the WhatsApp Bridge:**
+
+#### A. Start the WhatsApp Bridge (Authentication Required)
+When you run this command, the terminal will display a **QR Code**. 
+**You must scan this QR code with your own WhatsApp mobile app** (linked devices) to authenticate your session.
+
 ```bash
+# This will prompt for QR Code scan on first run
 node bridge.js --port 3000 --session ./whatsapp_session
 ```
 
-**B. Start the Hermes Gateway:**
-(Ensure you have set the environment variables listed in the Step 2 section above)
+#### B. Start the Hermes Gateway (The AI Brain)
+Ensure your environment variables are set.
 ```bash
-python3 -m gateway.run
+# From the hermes-agent directory
+PYTHONPATH=. python3 -m gateway.run
+```
+
+#### C. Start the Telegram Controller (Optional)
+To use Telegram as a remote terminal, set your credentials as environment variables first:
+```bash
+export TELEGRAM_TOKEN='your_bot_token_here'
+export TELEGRAM_CHAT_ID='your_chat_id_here'
+python3 telegram_controller.py
 ```
 
 ---
-*Developed by Rohman Nur Haqiqi*
+
+## 🛠️ Configuration (Environment Variables)
+
+### For WhatsApp AI Agent
+Set these in your Hermes environment:
+```bash
+export WHATSAPP_BRIDGE_PORT=3000
+export WHATSAPP_BRIDGE_SCRIPT=/absolute/path/to/bridge.js
+export WHATSAPP_SESSION_PATH=/absolute/path/to/whatsapp_session
+export WHATSAPP_DM_POLICY=open
+export WHATSAPP_GROUP_POLICY=open
+```
+
+### For Telegram Controller
+```bash
+export TELEGRAM_TOKEN='your_bot_token_here'
+export TELEGRAM_CHAT_ID='your_chat_id_here'
+```
+
+---
+
+*Developed with ❤️ by [Rohman Nur Haqiqi](https://github.com/rohman123)*
